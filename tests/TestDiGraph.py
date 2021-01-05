@@ -1,5 +1,4 @@
 import unittest
-import pytest
 from src.DiGraph import DiGraph
 from src.node import node
 from random import seed
@@ -20,8 +19,8 @@ class MyTestCase(unittest.TestCase):
         # g1 = graphCreator(6)
         g1 = DiGraph()
         for i in range(6):
-            n = node(i)
-            g1.add_node(n)
+            pos = (random.uniform(0, 15), random.uniform(0, 15), random.uniform(0, 15))
+            g1.add_node(i, pos)
         seed(1)
         inRange = random.randint(0, 6)
         outRange = random.randint(7, 12)
@@ -46,8 +45,8 @@ class MyTestCase(unittest.TestCase):
         # g2 = graphCreator(6)
         g2 = DiGraph()
         for i in range(6):
-            n = node(i)
-            g2.add_node(n)
+            pos = (random.uniform(0, 15), random.uniform(0, 15), random.uniform(0, 15))
+            g2.add_node(i, pos)
         g2.add_edge(0, 1, 1)
         g2.add_edge(0, 2, 2.5)
         g2.add_edge(2, 4, 7.9)

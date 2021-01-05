@@ -5,7 +5,7 @@ class node:
     pos:tuple
     weight:float
 
-    def __init__(self, key:int, pos: tuple):
+    def __init__(self, key: int, pos: tuple):
         self.key = key
         self.pos = pos
         self.weight = 0
