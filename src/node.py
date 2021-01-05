@@ -1,9 +1,8 @@
-
 class node:
-    key:int
-    tag:int
-    pos:tuple
-    weight:float
+    key: int
+    tag: int
+    pos: tuple
+    weight: float
 
     def __init__(self, key: int, pos: tuple):
         self.key = key
@@ -11,12 +10,11 @@ class node:
         self.weight = 0
         self.tag = 0
 
-
     def getKey(self) -> int:
         return self.key
 
     def getWeight(self) -> float:
-        return  self.weight
+        return self.weight
 
     def setWeight(self, weight):
         self.weight = weight
@@ -24,7 +22,7 @@ class node:
     def getPos(self) -> tuple:
         return self.pos
 
-    def setPos(self,pos):
+    def setPos(self, pos):
         self.pos = pos
 
     def getTag(self) -> int:
@@ -33,9 +31,16 @@ class node:
     def setTag(self, tag):
         self.tag = tag
 
+    def make_comparator(less_than):
+        def compare(x, y):
+            if less_than(x, y):
+                return -1
+            elif less_than(y, x):
+                return 1
+            else:
+                return 0
+
+            return compare
+
     def __str__(self):
-        return "key: "+str(self.key)+", pos: "+str(self.pos)
-
-
-
-
+        return "key: " + str(self.key) + ", pos: " + str(self.pos)

@@ -61,7 +61,8 @@ class GraphAlgoInterface:
         @return: The list of nodes in the SCC
 
         Notes:
-        If the graph is None or id1 is not in the graph, the function should return an empty list []
+        If the graph is None or id1 is not in the graph,
+        the function should return an empty list []
         """
         raise NotImplementedError
 

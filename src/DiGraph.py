@@ -5,6 +5,7 @@ from edge import edge
 
 class DiGraph(GraphInterface):
     graph: dict
+    # {integer:[in:{(int)src:weight},out:{(int)dest:weight}]}
     edges: dict
     nodeSize: int
     edgeSize: int
@@ -36,6 +37,9 @@ class DiGraph(GraphInterface):
             dest = e.get("dest")
             w = e.get("w")
             self.add_edge(src, dest, w)
+
+    def getNode(self, key):
+        return self.graph.get(key)
 
     def v_size(self) -> int:
         return self.nodeSize
