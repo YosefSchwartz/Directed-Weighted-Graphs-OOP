@@ -28,7 +28,7 @@ class node:
     def getTag(self) -> int:
         return self.tag
 
-    def setTag(self, tag):
+    def setTag(self, tag: int):
         self.tag = tag
 
     def make_comparator(less_than):
@@ -43,4 +43,5 @@ class node:
             return compare
 
     def __str__(self):
-        return "key: " + str(self.key) + ", pos: " + str(self.pos)
+        s = "key: " + str(self.key) + ", pos: " + str(self.pos)
+        return s

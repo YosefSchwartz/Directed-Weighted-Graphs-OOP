@@ -1,4 +1,5 @@
 from math import inf
+from typing import List
 
 from GraphAlgoInterface import GraphAlgoInterface
 from DiGraph import DiGraph
@@ -9,13 +10,10 @@ import json
 
 class GraphAlgo(GraphAlgoInterface):
     ga: DiGraph
-    re: dict
 
-    def __init__(self, graph: DiGraph):
-        self.ga = graph
-
-    def __init__(self):
-        graph = DiGraph([], [])
+    def __init__(self, graph=None):
+        if graph is None:
+            graph = DiGraph([], [])
         self.ga = graph
 
     def get_graph(self) -> GraphInterface:
@@ -50,57 +48,83 @@ class GraphAlgo(GraphAlgoInterface):
             return False
 
     def resetTagTo0(self):
-        for n in self.get_graph().get_all_v():
+        for n in self.get_graph().get_all_v().values():
             n.setTag(0)
 
     def Dijkstra(self, src: int):
         dist = PriorityQueue()
-        self.re = {}
+        re = {}
         self.resetTagTo0()
-        for n in self.get_graph().get_all_v():
+
+        for n in self.get_graph().get_all_v().values():
             n.setWeight(inf)
-            self.re[n.getKey()] = None
+            re[n.getKey()] = None
 
         tmp = self.get_graph().getNode(src)
         tmp.setWeight(0)
-        dist.put(tmp.getWeight(), tmp)
+        dist.put((tmp.getWeight(), tmp))
 
         while dist.empty() is False:
             tmp = dist.get()[1]
-            for e in self.get_graph().all_out_edges_of_node(tmp.getKey()):
-                dest = e[0]
+            for dest in self.get_graph().all_out_edges_of_node(tmp.getKey()):
                 destNode = self.get_graph().getNode(dest)
-                if destNode.getTag == 0:
-                    newDist = e[1] + tmp.getWeight()
-                    if newDist < destNode.getWeight:
+                if destNode.getTag() == 0:
+                    edgeW = self.get_graph().all_out_edges_of_node(tmp.getKey()).get(dest)
+                    newDist = edgeW + tmp.getWeight()
+                    if newDist < destNode.getWeight():
                         destNode.setWeight(newDist)
-                        self.re[dest] = tmp
-                        dist.put(destNode.getWeight(),destNode)
+                        re[dest] = tmp
+                        dist.put((destNode.getWeight(), destNode))
             tmp.setTag(1)
+        return re
 
     def shortest_path(self, id1: int, id2: int) -> (float, list):
         if self.get_graph().getNode(id1) is None or self.get_graph().getNode(id2) is None:
             return float(inf), []
-
         if id1 is id2:
             return 0, [id1]
-
-        self.Dijkstra(id1,id2)
-
-        dest = self.re.get(id2)[1]
+        re = self.Dijkstra(id1)
+        dest = re.get(id2)
+        dist = self.get_graph().getNode(id2).getWeight()
         if dest is None:
             return float(inf), []
-
         path = []
-        dist = dest[1].getWeight
-
+        path.extend([id2])
         while dest is not None:
-            path.extend(dest)
-            dest = self.re.get(dest)[1]
-
+            path.extend([dest.getKey()])
+            dest = re.get(dest.getKey())
         path.reverse()
+        return dist, path
 
-        return dist,path
+    def connected_component(self, id1: int) -> list:
+        component = []
+        if self.get_graph() is None:
+            return component
+        if self.get_graph().getNode(id1) is None:
+            return component
+        for key in self.get_graph().get_all_v().keys():
+            if self.shortest_path(id1, key)[0] != inf and self.shortest_path(key, id1)[0] != inf:
+                n = self.get_graph().getNode(key)
+                n.setTag(1)
+                component.extend([key])
+        return component
+
+    def connected_components(self) -> List[list]:
+        components = []
+        if self.get_graph() is None:
+            return components
+        self.resetTagTo0()
+        for n in self.get_graph().get_all_v().values():
+            if n.getTag() == 0:
+                component = self.connected_component(n.getKey())
+                components.extend([component])
+        return components
+
+
+    # def plot_graph(self) -> None:
+
+
+
 
     def __str__(self):
         return str(self.ga)

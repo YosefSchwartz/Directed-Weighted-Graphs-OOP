@@ -18,25 +18,25 @@ class DiGraph(GraphInterface):
         self.edgeSize = 0
         self.MC = 0
 
-    def __init__(self, Edges, Nodes):
-        self.graph = {}
-        self.edges = {}
-        self.nodeSize = 0
-        self.edgeSize = 0
-        self.MC = 0
-        for n in Nodes:
-            p = list(n.get("pos").split(","))
-            newPos = (float(p[0]), float(p[1]), float(p[2]))
-            newNode = node(n.get("id"), newPos)
-            self.graph[n.get("id")] = newNode
-            self.nodeSize += 1
-            self.MC += 1
-            self.edges[n.get("id")] = [{}, {}]
-        for e in Edges:
-            src = e.get("src")
-            dest = e.get("dest")
-            w = e.get("w")
-            self.add_edge(src, dest, w)
+    # def __init__(self, Edges, Nodes):
+    #     self.graph = {}
+    #     self.edges = {}
+    #     self.nodeSize = 0
+    #     self.edgeSize = 0
+    #     self.MC = 0
+    #     for n in Nodes:
+    #         p = list(n.get("pos").split(","))
+    #         newPos = (float(p[0]), float(p[1]), float(p[2]))
+    #         newNode = node(n.get("id"), newPos)
+    #         self.graph[n.get("id")] = newNode
+    #         self.nodeSize += 1
+    #         self.MC += 1
+    #         self.edges[n.get("id")] = [{}, {}]
+    #     for e in Edges:
+    #         src = e.get("src")
+    #         dest = e.get("dest")
+    #         w = e.get("w")
+    #         self.add_edge(src, dest, w)
 
     def getNode(self, key):
         return self.graph.get(key)
@@ -60,9 +60,10 @@ class DiGraph(GraphInterface):
         return self.MC
 
     def add_edge(self, id1: int, id2: int, weight: float) -> bool:
-        if (self.graph.get(id1) == None or self.graph.get(id2) == None):
+        if self.graph.get(id1) is None or self.graph.get(id2) is None or id1 is id2:
             return False
-        if (self.edges.get(id1)[1].get(id2) == None):
+
+        if self.edges.get(id1)[1].get(id2) is None:
             self.edges.get(id1)[1][id2] = weight
             self.edges.get(id2)[0][id1] = weight
             self.edgeSize += 1
@@ -76,8 +77,8 @@ class DiGraph(GraphInterface):
             return False
         else:
             n = node(node_id, pos)
-            self.graph[node_id] = n
-            self.edges[node_id] = [{}, {}]
+            self.graph[n.getKey()] = n
+            self.edges[n.getKey()] = [{}, {}]
             self.nodeSize += 1
             self.MC += 1
             return True
