@@ -11,34 +11,37 @@ class DiGraph(GraphInterface):
     edgeSize: int
     MC: int
 
-    def __init__(self):
-        self.graph = {}
-        self.edges = {}
-        self.nodeSize = 0
-        self.edgeSize = 0
-        self.MC = 0
-
-    # def __init__(self, Edges, Nodes):
+    # def __init__(self):
     #     self.graph = {}
     #     self.edges = {}
     #     self.nodeSize = 0
     #     self.edgeSize = 0
     #     self.MC = 0
-    #     for n in Nodes:
-    #         p = list(n.get("pos").split(","))
-    #         newPos = (float(p[0]), float(p[1]), float(p[2]))
-    #         newNode = node(n.get("id"), newPos)
-    #         self.graph[n.get("id")] = newNode
-    #         self.nodeSize += 1
-    #         self.MC += 1
-    #         self.edges[n.get("id")] = [{}, {}]
-    #     for e in Edges:
-    #         src = e.get("src")
-    #         dest = e.get("dest")
-    #         w = e.get("w")
-    #         self.add_edge(src, dest, w)
+
+    def __init__(self, Edges=None, Nodes=None):
+        self.graph = {}
+        self.edges = {}
+        self.nodeSize = 0
+        self.edgeSize = 0
+        self.MC = 0
+        if Nodes is not None and Edges is not None:
+            for n in Nodes:
+                p = list(n.get("pos").split(","))
+                newPos = (float(p[0]), float(p[1]), float(p[2]))
+                newNode = node(n.get("id"), newPos)
+                self.graph[n.get("id")] = newNode
+                self.nodeSize += 1
+                self.MC += 1
+                self.edges[n.get("id")] = [{}, {}]
+            for e in Edges:
+                src = e.get("src")
+                dest = e.get("dest")
+                w = e.get("w")
+                self.add_edge(src, dest, w)
 
     def getNode(self, key):
+        if self.graph is None:
+            return None
         return self.graph.get(key)
 
     def v_size(self) -> int:
@@ -51,15 +54,21 @@ class DiGraph(GraphInterface):
         return self.graph
 
     def all_in_edges_of_node(self, id1: int) -> dict:
+        if self.edges is None:
+            return {}
         return self.edges.get(id1)[0]
 
     def all_out_edges_of_node(self, id1: int) -> dict:
+        if self.edges is None:
+            return {}
         return self.edges.get(id1)[1]
 
     def get_mc(self) -> int:
         return self.MC
 
     def add_edge(self, id1: int, id2: int, weight: float) -> bool:
+        if self.graph is None:
+            return False
         if self.graph.get(id1) is None or self.graph.get(id2) is None or id1 is id2:
             return False
 
@@ -84,6 +93,8 @@ class DiGraph(GraphInterface):
             return True
 
     def remove_node(self, node_id: int) -> bool:
+        if self.graph is None:
+            return False
         if self.graph.get(node_id) is None:
             return False
         for eIn in self.edges.get(node_id)[0]:

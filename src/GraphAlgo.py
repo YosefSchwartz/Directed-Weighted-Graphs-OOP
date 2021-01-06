@@ -12,8 +12,6 @@ class GraphAlgo(GraphAlgoInterface):
     ga: DiGraph
 
     def __init__(self, graph=None):
-        if graph is None:
-            graph = DiGraph([], [])
         self.ga = graph
 
     def get_graph(self) -> GraphInterface:
@@ -79,6 +77,8 @@ class GraphAlgo(GraphAlgoInterface):
         return re
 
     def shortest_path(self, id1: int, id2: int) -> (float, list):
+        if self.get_graph() is None:
+            return float(inf), []
         if self.get_graph().getNode(id1) is None or self.get_graph().getNode(id2) is None:
             return float(inf), []
         if id1 is id2:
@@ -122,9 +122,6 @@ class GraphAlgo(GraphAlgoInterface):
 
 
     # def plot_graph(self) -> None:
-
-
-
 
     def __str__(self):
         return str(self.ga)

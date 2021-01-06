@@ -38,9 +38,9 @@ def main():
     # li = Convert((str1))
     # print(li[0])
 
-    # ga = GraphAlgo()
-    # ga.load_from_json("A0.json")
-    # print(ga)
+    ga = GraphAlgo()
+    ga.load_from_json("../data/A0")
+    print(ga)
     # ga.save_to_json("moshe2.json")
     # ga1=GraphAlgo()
     # ga1.load_from_json("moshe2.json")
@@ -65,14 +65,14 @@ def main():
     g.add_edge(0, 5, 87)
     g.add_edge(4, 1, 98)
 
-    ga = GraphAlgo(g)
+    # ga = GraphAlgo(g)
     # print(ga)
 
-    for n in g.get_all_v().keys():
-        print("connected_component of node-> "+str(n))
-        print(ga.connected_component(n))
-    print("connected_components of g")
-    print(ga.connected_components())
+    # for n in g.get_all_v().keys():
+    #     print("connected_component of node-> "+str(n))
+    #     print(ga.connected_component(n))
+    # print("connected_components of g")
+    # print(ga.connected_components())
 
 
 if __name__ == '__main__':
