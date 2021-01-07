@@ -4,6 +4,7 @@ from GraphAlgoInterface import GraphAlgoInterface
 from DiGraph import DiGraph
 from GraphInterface import GraphInterface
 from queue import PriorityQueue
+import matplotlib.pyplot as plt
 import json
 
 
@@ -29,9 +30,7 @@ class GraphAlgo(GraphAlgoInterface):
 
     def save_to_json(self, file_name: str) -> bool:
         try:
-            graph = {}
-            graph["Edges"] = []
-            graph["Nodes"] = []
+            graph = {"Edges": [], "Nodes": []}
             for n in self.get_graph().get_all_v().values():
                 pos = str(n.getPos()[0]) + "," + str(n.getPos()[1]) + "," + str(n.getPos()[2])
                 graph.get("Nodes").extend([{"pos": pos, "id": n.getKey()}])
@@ -125,7 +124,10 @@ class GraphAlgo(GraphAlgoInterface):
         return components
 
     def plot_graph(self) -> None:
-        x=1
+        ax = plt.axes()
+
+        ax.arrow(0, 0, 0.5, 0.5, head_width=0.05, head_length=0.1, fc='k', ec='k')
+        plt.show()
 
     def __str__(self):
         return str(self.ga)
