@@ -6,6 +6,8 @@ from GraphInterface import GraphInterface
 from queue import PriorityQueue
 import matplotlib.pyplot as plt
 import json
+import numpy as np
+import random as rnd
 
 
 class GraphAlgo(GraphAlgoInterface):
@@ -124,10 +126,43 @@ class GraphAlgo(GraphAlgoInterface):
         return components
 
     def plot_graph(self) -> None:
-        ax = plt.axes()
+        # Get limits of graph
+        minX, minY, maxX, maxY = inf, inf, -inf, -inf
+        for n in self.get_graph().get_all_v().values():
+            if n.getPos() is not None:
+                if n.getPos()[0] > maxX:
+                    maxX = n.getPos()[0]
+                if n.getPos()[0] < minX:
+                    minX = n.getPos()[0]
+                if n.getPos()[1] > maxY:
+                    maxY = n.getPos()[0]
+                if n.getPos()[1] < minY:
+                    minY = n.getPos()[0]
 
-        ax.arrow(0, 0, 0.5, 0.5, head_width=0.05, head_length=0.1, fc='k', ec='k')
+        X, Y = [], []
+        for n in self.get_graph().get_all_v().values():
+            if n.getPos() is None:
+                n.setPos((rnd.uniform(0, 10), rnd.uniform(0, 10), rnd.uniform(0, 10)))
+            X.extend([n.getPos()[0]])
+            Y.extend([n.getPos()[1]])
+        plt.scatter(X, Y)
+
+        for n in self.get_graph().get_all_v().values():
+            nX = n.getPos()[0]
+            nY = n.getPos()[1]
+            # for eIn in self.get_graph().all_in_edges_of_node(n.getKey()).keys():
+            #     eX = self.get_graph().getNode(eIn).getPos()[0]
+            #     eY = self.get_graph().getNode(eIn).getPos()[1]
+            #     plt.arrow(nX, nY, eX, eY, head_width=0.05, head_length=0.1, fc='k', ec='k')
+            for eOut in self.get_graph().all_out_edges_of_node(n.getKey()).keys():
+                eX = self.get_graph().getNode(eOut).getPos()[0]
+                eY = self.get_graph().getNode(eOut).getPos()[1]
+                plt.arrow(nX, nY, eX, eY, head_width=0.05, head_length=0.1, fc='k', ec='k')
+
         plt.show()
+
+        # ax.arrow(0, 0, 0.5, 0.5, head_width=0.05, head_length=0.1, fc='k', ec='k')
+        # plt.show()
 
     def __str__(self):
         return str(self.ga)

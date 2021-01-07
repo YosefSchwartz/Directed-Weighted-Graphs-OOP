@@ -9,6 +9,7 @@ class DiGraph(GraphInterface):
     edgeSize: int
     MC: int
 
+
     def __init__(self, Edges=None, Nodes=None):
         self.graph = {}
         self.edges = {}

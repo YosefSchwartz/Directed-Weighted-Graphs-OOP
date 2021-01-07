@@ -1,6 +1,7 @@
 import json
 from DiGraph import DiGraph
 from GraphAlgo import GraphAlgo
+import random as rnd
 from node import node
 from edge import edge
 from queue import PriorityQueue
@@ -44,6 +45,7 @@ def main():
     g = DiGraph()
     for i in range(6):
         g.add_node(i)
+    # print(g.getNode(0).getPos()[0])
     g.add_edge(3, 2, 32)
     g.add_edge(4, 3, 21)
     g.add_edge(3, 2, 32)
@@ -53,16 +55,17 @@ def main():
     g.add_edge(4, 5, 7)
     g.add_edge(0, 5, 87)
     g.add_edge(4, 1, 98)
-
+    #
     ga = GraphAlgo(g)
-    print("THIS IS GA")
+    ga.plot_graph()
+    # print("THIS IS GA")
     print(ga)
-
-    for n in g.get_all_v().keys():
-        print("connected_component of node-> " + str(n))
-        print(ga.connected_component(n))
-    print("connected_components of g")
-    print(ga.connected_components())
+    #
+    # for n in g.get_all_v().keys():
+    #     print("connected_component of node-> " + str(n))
+    #     print(ga.connected_component(n))
+    # print("connected_components of g")
+    # print(ga.connected_components())
 
 
 if __name__ == '__main__':
