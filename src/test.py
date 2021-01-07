@@ -1,5 +1,6 @@
 import random
 import unittest
+
 from src.DiGraph import DiGraph
 
 
@@ -69,4 +70,3 @@ class MyTestCase(unittest.TestCase):
 
 if __name__ == '__main__':
     unittest.main()
-

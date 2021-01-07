@@ -1,6 +1,5 @@
 from math import inf
 from typing import List
-
 from GraphAlgoInterface import GraphAlgoInterface
 from DiGraph import DiGraph
 from GraphInterface import GraphInterface
@@ -22,6 +21,7 @@ class GraphAlgo(GraphAlgoInterface):
             fp = open(file_name)
             g = DiGraph(**json.load(fp))
             self.ga = g
+            fp.close()
             return True
         except Exception as e:
             print(e)
@@ -48,6 +48,10 @@ class GraphAlgo(GraphAlgoInterface):
     def resetTagTo0(self):
         for n in self.get_graph().get_all_v().values():
             n.setTag(0)
+
+    def resetCMPTo0(self):
+        for n in self.get_graph().get_all_v().values():
+            n.setCMP(0)
 
     def Dijkstra(self, src: int):
         dist = PriorityQueue()
@@ -105,7 +109,7 @@ class GraphAlgo(GraphAlgoInterface):
         for key in self.get_graph().get_all_v().keys():
             if self.shortest_path(id1, key)[0] != inf and self.shortest_path(key, id1)[0] != inf:
                 n = self.get_graph().getNode(key)
-                n.setTag(1)
+                n.setCMP(1)
                 component.extend([key])
         return component
 
@@ -113,15 +117,15 @@ class GraphAlgo(GraphAlgoInterface):
         components = []
         if self.get_graph() is None:
             return components
-        self.resetTagTo0()
+        self.resetCMPTo0()
         for n in self.get_graph().get_all_v().values():
-            if n.getTag() == 0:
+            if n.getCMP() == 0:
                 component = self.connected_component(n.getKey())
                 components.extend([component])
         return components
 
-
-    # def plot_graph(self) -> None:
+    def plot_graph(self) -> None:
+        x=1
 
     def __str__(self):
         return str(self.ga)

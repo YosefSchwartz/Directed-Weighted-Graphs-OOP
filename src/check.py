@@ -6,16 +6,6 @@ from edge import edge
 from queue import PriorityQueue
 
 
-class Student:
-
-    def __init__(self, name, age):
-        self.name = name
-        self.age = age
-
-    def __str__(self):
-        return "{},{}".format(self.name, self.age)
-
-
 def main():
     # rand_dict = {"age": 34,"name": "yossi"}
     # print(rand_dict)
@@ -38,9 +28,9 @@ def main():
     # li = Convert((str1))
     # print(li[0])
 
-    ga = GraphAlgo()
-    ga.load_from_json("../data/A0")
-    print(ga)
+    # ga = GraphAlgo()
+    # ga.load_from_json("../data/A0")
+    # print(ga)
     # ga.save_to_json("moshe2.json")
     # ga1=GraphAlgo()
     # ga1.load_from_json("moshe2.json")
@@ -54,9 +44,8 @@ def main():
     g = DiGraph()
     for i in range(6):
         g.add_node(i)
-    g.add_edge(0, 1, 1.5)
-    g.add_edge(1, 0, 2)
-    g.add_edge(2, 3, 9.23)
+    g.add_edge(3, 2, 32)
+    g.add_edge(4, 3, 21)
     g.add_edge(3, 2, 32)
     g.add_edge(4, 3, 21)
     g.add_edge(2, 4, 41)
@@ -65,14 +54,15 @@ def main():
     g.add_edge(0, 5, 87)
     g.add_edge(4, 1, 98)
 
-    # ga = GraphAlgo(g)
-    # print(ga)
+    ga = GraphAlgo(g)
+    print("THIS IS GA")
+    print(ga)
 
-    # for n in g.get_all_v().keys():
-    #     print("connected_component of node-> "+str(n))
-    #     print(ga.connected_component(n))
-    # print("connected_components of g")
-    # print(ga.connected_components())
+    for n in g.get_all_v().keys():
+        print("connected_component of node-> " + str(n))
+        print(ga.connected_component(n))
+    print("connected_components of g")
+    print(ga.connected_components())
 
 
 if __name__ == '__main__':

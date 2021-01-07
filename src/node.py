@@ -1,6 +1,7 @@
 class node:
     key: int
     tag: int
+    CMP:int
     pos: tuple
     weight: float
 
@@ -9,6 +10,7 @@ class node:
         self.pos = pos
         self.weight = 0
         self.tag = 0
+        self.CMP=0
 
     def getKey(self) -> int:
         return self.key
@@ -31,6 +33,12 @@ class node:
     def setTag(self, tag: int):
         self.tag = tag
 
+    def getCMP(self) -> int:
+        return self.CMP
+
+    def setCMP(self, CMP: int):
+        self.CMP = CMP
+
     def make_comparator(less_than):
         def compare(x, y):
             if less_than(x, y):
@@ -41,6 +49,9 @@ class node:
                 return 0
 
             return compare
+
+    def __repr__(self):
+        return str([self.getKey()])
 
     def __str__(self):
         s = "key: " + str(self.key) + ", pos: " + str(self.pos)

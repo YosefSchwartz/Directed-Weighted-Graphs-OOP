@@ -1,22 +1,13 @@
 from GraphInterface import GraphInterface
 from node import node
-from edge import edge
 
 
 class DiGraph(GraphInterface):
     graph: dict
-    # {integer:[in:{(int)src:weight},out:{(int)dest:weight}]}
-    edges: dict
+    edges: dict  # {integer:[in:{(int)src:weight},out:{(int)dest:weight}]}
     nodeSize: int
     edgeSize: int
     MC: int
-
-    # def __init__(self):
-    #     self.graph = {}
-    #     self.edges = {}
-    #     self.nodeSize = 0
-    #     self.edgeSize = 0
-    #     self.MC = 0
 
     def __init__(self, Edges=None, Nodes=None):
         self.graph = {}
@@ -54,11 +45,19 @@ class DiGraph(GraphInterface):
         return self.graph
 
     def all_in_edges_of_node(self, id1: int) -> dict:
+        if self.graph is None:
+            return None
+        if self.graph.get(id1) is None:
+            return None
         if self.edges is None:
             return {}
         return self.edges.get(id1)[0]
 
     def all_out_edges_of_node(self, id1: int) -> dict:
+        if self.graph is None:
+            return None
+        if self.graph.get(id1) is None:
+            return None
         if self.edges is None:
             return {}
         return self.edges.get(id1)[1]
@@ -120,6 +119,24 @@ class DiGraph(GraphInterface):
         self.edges.get(node_id2)[0].pop(node_id1)
         self.edgeSize -= 1
         self.MC += 1
+        return True
+
+    def __eq__(self, other):
+        if isinstance(other, (DiGraph, GraphInterface)) is False:
+            print("1")
+            return False
+
+        if sorted(self.graph) != sorted(other.get_all_v()):
+            print("2")
+            return False
+        for n in self.get_all_v().keys():
+            eOut1 = sorted(other.all_out_edges_of_node(n))
+            eIn1 = sorted(other.all_in_edges_of_node(n))
+            eOut2 = sorted(self.all_out_edges_of_node(n))
+            eIn2 = sorted(self.all_in_edges_of_node(n))
+            if eOut1 != eOut2 or eIn1 != eIn2:
+                print("3")
+                return False
         return True
 
     def __str__(self):
