@@ -5,6 +5,8 @@ import random as rnd
 from node import node
 from edge import edge
 from queue import PriorityQueue
+import matplotlib.pyplot as plt
+import numpy as np
 
 
 def main():
@@ -45,7 +47,7 @@ def main():
     g = DiGraph()
     for i in range(6):
         g.add_node(i)
-    # print(g.getNode(0).getPos()[0])
+    g.add_edge(0, 1, 5)
     g.add_edge(3, 2, 32)
     g.add_edge(4, 3, 21)
     g.add_edge(3, 2, 32)
@@ -58,8 +60,8 @@ def main():
     #
     ga = GraphAlgo(g)
     ga.plot_graph()
-    # print("THIS IS GA")
     print(ga)
+
     #
     # for n in g.get_all_v().keys():
     #     print("connected_component of node-> " + str(n))

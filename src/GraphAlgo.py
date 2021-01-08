@@ -139,30 +139,38 @@ class GraphAlgo(GraphAlgoInterface):
                 if n.getPos()[1] < minY:
                     minY = n.getPos()[0]
 
+        if minX is inf:
+            minX, maxX, minY, maxY = 1, 10, 1, 10
+        else:
+            n = self.get_graph().v_size()
+            if maxX - minX < n or maxY - minY < n:
+                maxX += n/2
+                minX -= n/2
+                maxY += n/2
+                minY -= n/2
+        k = maxX-minX
+
         X, Y = [], []
         for n in self.get_graph().get_all_v().values():
             if n.getPos() is None:
-                n.setPos((rnd.uniform(0, 10), rnd.uniform(0, 10), rnd.uniform(0, 10)))
+                n.setPos((rnd.uniform(minX, maxX), rnd.uniform(minY, maxY), rnd.uniform(0, 10)))
+            # TODO check situation two nodes on same point
+            # while X.__contains__(n.getPos()[0]) is F or Y.__contains__(n.getPos()[1] is True):
+                # continue
             X.extend([n.getPos()[0]])
             Y.extend([n.getPos()[1]])
-        plt.scatter(X, Y)
+            plt.annotate(n.getKey(), (n.getPos()[0], n.getPos()[1]), (n.getPos()[0]+1/k, n.getPos()[1]+1/k), c='g')
+        plt.scatter(X, Y, s=100)
 
         for n in self.get_graph().get_all_v().values():
             nX = n.getPos()[0]
             nY = n.getPos()[1]
-            # for eIn in self.get_graph().all_in_edges_of_node(n.getKey()).keys():
-            #     eX = self.get_graph().getNode(eIn).getPos()[0]
-            #     eY = self.get_graph().getNode(eIn).getPos()[1]
-            #     plt.arrow(nX, nY, eX, eY, head_width=0.05, head_length=0.1, fc='k', ec='k')
             for eOut in self.get_graph().all_out_edges_of_node(n.getKey()).keys():
                 eX = self.get_graph().getNode(eOut).getPos()[0]
                 eY = self.get_graph().getNode(eOut).getPos()[1]
-                plt.arrow(nX, nY, eX, eY, head_width=0.05, head_length=0.1, fc='k', ec='k')
-
+                # TODO draw arrow on edge of node
+                plt.annotate("", xy=(eX, eY), xytext=(nX, nY), arrowprops=dict(arrowstyle="->"))
         plt.show()
-
-        # ax.arrow(0, 0, 0.5, 0.5, head_width=0.05, head_length=0.1, fc='k', ec='k')
-        # plt.show()
 
     def __str__(self):
         return str(self.ga)
