@@ -1,3 +1,4 @@
+import timeit
 import unittest
 from math import inf
 from random import seed
@@ -82,7 +83,6 @@ class MyTestCase(unittest.TestCase):
         path33 = ga.shortest_path(2, 3)
         path44 = ga.shortest_path(4, 0)
 
-
         self.assertEqual(1.5, path11[0])
         self.assertEqual(15.7, path22[0])
         self.assertEqual(6.7, path33[0])
@@ -94,9 +94,7 @@ class MyTestCase(unittest.TestCase):
         self.assertEqual(inf, path44[0])
 
     @staticmethod
-    # @timeout_decorator.timeout(10)
     def test_shortestPath_Time():
-        # assert time out
         v, e = 1000000, 100000
         seed(2)
         g = graphCreator(v)
@@ -170,6 +168,27 @@ class MyTestCase(unittest.TestCase):
         components = ga.connected_components()
         excepted = [[0, 1, 2, 3, 4, 5]]
         self.assertEqual(excepted, components)
+
+    @staticmethod
+    def test_connected_components_time():
+        v, e = 1000000, 100000
+        seed(2)
+        g = graphCreator(v)
+        for i in range(e):
+            w = random.uniform(0, 30)
+            n1 = random.randint(0, v - 1)
+            n2 = random.randint(0, v - 1)
+            g.add_edge(n1, n2, w)
+        ga1 = GraphAlgo(g)
+        n1 = random.randint(0, v - 1)
+        start = timeit.default_timer()
+        ga1.connected_component(n1)
+        mid = timeit.default_timer()
+        ga1.connected_components()
+        end = timeit.default_timer()
+        print("time for connected_component-> "+str(mid-start))
+        print("time for connected_components-> "+str(end-mid))
+
 
 
 if __name__ == '__main__':

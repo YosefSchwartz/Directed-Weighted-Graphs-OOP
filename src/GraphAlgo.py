@@ -114,19 +114,53 @@ class GraphAlgo(GraphAlgoInterface):
                 component.extend([key])
         return component
 
+    # def connected_components(self) -> List[list]:
+    #     components = []
+    #     if self.get_graph() is None:
+    #         return components
+    #     self.resetCMPTo0()
+    #     for n in self.get_graph().get_all_v().values():
+    #         if n.getCMP() == 0:
+    #             component = self.connected_component(n.getKey())
+    #             components.extend([component])
+    #     return components
+
+
+    def dfs(self, key, sign):
+        if sign == 0: # regular graph
+            if self.get_graph().getNode(key).setTag(1):
+                for dest in self.get_graph().all_out_edges_of_node(key).keys():
+                    self.dfs(dest, 0)
+
+
+
+
+        elif sign == 1: # reversed graph
+
+
     def connected_components(self) -> List[list]:
         components = []
-        if self.get_graph() is None:
-            return components
-        self.resetCMPTo0()
+        s = [] # stack
+        self.resetTagTo0()
         for n in self.get_graph().get_all_v().values():
-            if n.getCMP() == 0:
-                component = self.connected_component(n.getKey())
-                components.extend([component])
+            if n.getTag() == 0:
+                s = self.dfs(n.getKey(), 0)
+        self.resetTagTo0()
+        while s.__sizeof__() != 0:
+            n = s.pop()
+            if n.getTag() == 0:
+                components.extend([self.dfs(n.getKey(), 1)])
         return components
+
+
+
+
+
 
     def plot_graph(self) -> None:
         # Get limits of graph
+        if self.get_graph() is None:
+            return
         minX, minY, maxX, maxY = inf, inf, -inf, -inf
         for n in self.get_graph().get_all_v().values():
             if n.getPos() is not None:

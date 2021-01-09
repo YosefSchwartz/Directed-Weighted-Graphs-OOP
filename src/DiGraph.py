@@ -9,7 +9,6 @@ class DiGraph(GraphInterface):
     edgeSize: int
     MC: int
 
-
     def __init__(self, Edges=None, Nodes=None):
         self.graph = {}
         self.edges = {}
@@ -18,8 +17,10 @@ class DiGraph(GraphInterface):
         self.MC = 0
         if Nodes is not None and Edges is not None:
             for n in Nodes:
-                p = list(n.get("pos").split(","))
-                newPos = (float(p[0]), float(p[1]), float(p[2]))
+                if n.get("pos") is not None:
+                    p = list(n.get("pos").split(","))
+                    newPos = (float(p[0]), float(p[1]), float(p[2]))
+                newPos = None
                 newNode = node(n.get("id"), newPos)
                 self.graph[n.get("id")] = newNode
                 self.nodeSize += 1
