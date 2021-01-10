@@ -1,13 +1,16 @@
 from math import inf
 from typing import List
+
+import node
 from GraphAlgoInterface import GraphAlgoInterface
 from DiGraph import DiGraph
 from GraphInterface import GraphInterface
-from queue import PriorityQueue
+from queue import PriorityQueue, Queue
 import matplotlib.pyplot as plt
 import json
 import numpy as np
 import random as rnd
+
 
 
 class GraphAlgo(GraphAlgoInterface):
@@ -101,51 +104,80 @@ class GraphAlgo(GraphAlgoInterface):
         path.reverse()
         return dist, path
 
+    # def connected_component(self, id1: int) -> list:
+    #     component = []
+    #     if self.get_graph() is None:
+    #         return component
+    #     if self.get_graph().getNode(id1) is None:
+    #         return component
+    #     for n in self.get_graph().get_all_v().values():
+    #         if self.shortest_path(id1, n.getKey())[0] != inf and self.shortest_path(n.getKey(), id1)[0] != inf:
+    #             n.setCMP(1)
+    #             component.extend([n.getKey()])
+    #     return component
+
     def connected_component(self, id1: int) -> list:
         component = []
         if self.get_graph() is None:
             return component
         if self.get_graph().getNode(id1) is None:
             return component
-        for n in self.get_graph().get_all_v().values():
-            if n.getCMP() != 0:
-                if self.shortest_path(id1, n.getKey()[0] != inf and self.shortest_path(n.getKey()), id1)[0] != inf:
-                    n.setCMP(1)
-                    component.extend([n.getKey()])
-            return component
+        n = self.get_graph().getNode(id1)
+        self.resetTagTo0()
+        Vout = self.DFS(n, [])
+        self.resetTagTo0()
+        Vin = self.DFS_Opp(n, [])
+        return list(set(Vout).intersection(Vin))
+
+    # def DFS(self, n: node, s: list):
+    #     n.setTag(1)
+    #     for v in self.get_graph().all_out_edges_of_node(n.getKey()).keys():
+    #         nodeV = self.get_graph().getNode(v)
+    #         if nodeV.getTag() == 0:
+    #             self.DFS(nodeV, s)
+    #     n.setTag(2)
+    #     s.append(n.getKey())
+    #     return s
+
+    def DFS(self, n: node):
+        q = Queue()
+        n.setTag(1)
+        q.put(n)
+        while q.empty() is not True:
+            n = q.get()
+            for v in self.get_graph().all_out_edges_of_node(n.getKey()).keys():
+                nodeV = self.get_graph().getNode(v)
+                if nodeV.getTag() == 0:
+                    q.put(nodeV)
+                    n.setTag(2)
+        s.append(n.getKey())
+        return s
+
+    def DFS_Opp(self, n: node, s: list):
+        n.setTag(1)
+        for v in self.get_graph().all_in_edges_of_node(n.getKey()).keys():
+            nodeV = self.get_graph().getNode(v)
+            if nodeV.getTag() == 0:
+                self.DFS_Opp(nodeV, s)
+        n.setTag(2)
+        s.append(n.getKey())
+        return s
 
     def connected_components(self) -> List[list]:
+        s = []
         components = []
-        if self.get_graph() is None:
-            return components
-        self.resetCMPTo0()
-        for n in self.get_graph().get_all_v().values():
-            if n.getCMP() == 0:
-                component = self.connected_component(n.getKey())
-                components.extend([component])
-        self.resetCMPTo0()
-        return components
-
-    def dfs(self, key, sign):
-        if sign == 0:  # regular graph
-            if self.get_graph().getNode(key).setTag(1):
-                for dest in self.get_graph().all_out_edges_of_node(key).keys():
-                    self.dfs(dest, 0)
-
-        # elif sign == 1: # reversed graph
-
-    def connected_components(self) -> List[list]:
-        components = []
-        s = []  # stack
         self.resetTagTo0()
         for n in self.get_graph().get_all_v().values():
             if n.getTag() == 0:
-                s = self.dfs(n.getKey(), 0)
+                self.DFS(n, s)
+# dfs on the opp graph
         self.resetTagTo0()
-        while s.__sizeof__() != 0:
-            n = s.pop()
-            if n.getTag() == 0:
-                components.extend([self.dfs(n.getKey(), 1)])
+        while len(s) > 0:
+            x = s.pop()
+            u = self.get_graph().getNode(x)
+            if u.getTag() == 0:
+                p = self.DFS_Opp(u, [])
+                components.append(sorted(p))
         return components
 
     def plot_graph(self) -> None:

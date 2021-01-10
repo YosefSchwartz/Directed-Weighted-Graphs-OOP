@@ -4,7 +4,7 @@ from math import inf
 from random import seed
 import random
 # import timeout_decorator
-
+from numpy import sort
 
 from src.DiGraph import DiGraph
 from src.GraphAlgo import GraphAlgo
@@ -126,14 +126,14 @@ class MyTestCase(unittest.TestCase):
         component4 = ga.connected_component(4)
         component5 = ga.connected_component(5)
         self.assertEqual(True, component0 == [0])
-        self.assertEqual(True, component1 == [1, 2])
-        self.assertEqual(True, component2 == [1, 2])
+        self.assertEqual(True, sorted(component1) == [1, 2])
+        self.assertEqual(True, sorted(component2) == [1, 2])
         self.assertEqual(True, component3 == [3])
         self.assertEqual(True, component4 == [4])
         self.assertEqual(True, component5 == [5])
 
         components = ga.connected_components()
-        self.assertEqual(True, (components == [[0], [1, 2], [3], [4], [5]]))
+        self.assertEqual(True, (sorted(components) == [[0], [1, 2], [3], [4], [5]]))
 
         g.add_edge(0, 5, 4)
         g.add_edge(1, 5, 7)
@@ -155,23 +155,23 @@ class MyTestCase(unittest.TestCase):
         component4 = ga.connected_component(4)
         component5 = ga.connected_component(5)
 
-        self.assertEqual(True, component0 == c0)
-        self.assertEqual(True, component1 == c1)
-        self.assertEqual(True, component2 == c2)
-        self.assertEqual(True, component3 == c3)
-        self.assertEqual(True, component4 == c4)
-        self.assertEqual(True, component5 == c5)
+        self.assertEqual(True, sorted(component0) == c0)
+        self.assertEqual(True, sorted(component1) == c1)
+        self.assertEqual(True, sorted(component2) == c2)
+        self.assertEqual(True, sorted(component3) == c3)
+        self.assertEqual(True, sorted(component4) == c4)
+        self.assertEqual(True, sorted(component5) == c5)
 
         g.add_edge(2, 1, 45)
         g.add_edge(3, 2, 7.9)
 
-        components = ga.connected_components()
+        components = sorted(ga.connected_components())
         excepted = [[0, 1, 2, 3, 4, 5]]
-        self.assertEqual(excepted, components)
+        self.assertEqual(excepted, sorted(components))
 
     @staticmethod
-    def test_connected_components_time():
-        v, e = 1000000, 100000
+    def test_connected_component_time():
+        v, e = 10**6, 10**5
         seed(2)
         g = graphCreator(v)
         for i in range(e):
@@ -183,12 +183,24 @@ class MyTestCase(unittest.TestCase):
         n1 = random.randint(0, v - 1)
         start = timeit.default_timer()
         ga1.connected_component(n1)
-        mid = timeit.default_timer()
+        end = timeit.default_timer()
+        print("time for connected_component-> "+str(end-start))
+
+    @staticmethod
+    def test_connected_components_time():
+        v, e = 10**6, 10**5
+        seed(2)
+        g = graphCreator(v)
+        for i in range(e):
+            w = random.uniform(0, 30)
+            n1 = random.randint(0, v - 1)
+            n2 = random.randint(0, v - 1)
+            g.add_edge(n1, n2, w)
+        ga1 = GraphAlgo(g)
+        start = timeit.default_timer()
         ga1.connected_components()
         end = timeit.default_timer()
-        print("time for connected_component-> "+str(mid-start))
-        print("time for connected_components-> "+str(end-mid))
-
+        print("time for connected_components-> "+str(end-start))
 
 
 if __name__ == '__main__':
