@@ -11,16 +11,33 @@ import json
 import numpy as np
 import random as rnd
 
+"""
+This class represents some algorithms that occurred on DiGraph (directed weighted graph)
+"""
 
 
 class GraphAlgo(GraphAlgoInterface):
     ga: DiGraph
 
+    """
+    Constructor function
+    """
+
     def __init__(self, graph=None):
         self.ga = graph
 
+    """
+    :return: the directed graph on which the algorithm works on.
+    """
+
     def get_graph(self) -> GraphInterface:
         return self.ga
+
+    """
+    Loads a graph from a json file.
+    @param file_name: The path to the json file
+    @returns True if the loading was successful, False o.w.
+    """
 
     def load_from_json(self, file_name: str) -> bool:
         try:
@@ -32,6 +49,12 @@ class GraphAlgo(GraphAlgoInterface):
         except Exception as e:
             print(e)
             return False
+
+    """
+    Saves the graph in JSON format to a file
+    @param file_name: The path to the out file
+    @return: True if the save was successful, False o.w.
+    """
 
     def save_to_json(self, file_name: str) -> bool:
         try:
@@ -49,13 +72,28 @@ class GraphAlgo(GraphAlgoInterface):
             print(e)
             return False
 
+    """
+    Reset all tags of each node to zero
+    """
+
     def resetTagTo0(self):
         for n in self.get_graph().get_all_v().values():
             n.setTag(0)
 
+    """
+    Reset all CMPs of each node to zero
+    """
+
     def resetCMPTo0(self):
         for n in self.get_graph().get_all_v().values():
             n.setCMP(0)
+
+    """
+    Dijkstra algorithms
+    
+    For more:
+    https://en.wikipedia.org/wiki/Dijkstra%27s_algorithm
+    """
 
     def Dijkstra(self, src: int):
         dist = PriorityQueue()
@@ -83,6 +121,13 @@ class GraphAlgo(GraphAlgoInterface):
                         dist.put((destNode.getWeight(), destNode))
             tmp.setTag(1)
         return re
+
+    """
+    Returns the shortest path from node id1 to node id2 using Dijkstra's Algorithm
+    @param id1: The start node id
+    @param id2: The end node id
+    @return: The distance of the path, a list of the nodes ids that the path goes through
+    """
 
     def shortest_path(self, id1: int, id2: int) -> (float, list):
         if self.get_graph() is None:
@@ -116,6 +161,16 @@ class GraphAlgo(GraphAlgoInterface):
     #             component.extend([n.getKey()])
     #     return component
 
+    """
+    Finds the Strongly Connected Component(SCC) that node id1 is a part of.
+    @param id1: The node id
+    @return: The list of nodes in the SCC
+
+    Notes:
+    If the graph is None or id1 is not in the graph,
+    the function should return an empty list []
+    """
+
     def connected_component(self, id1: int) -> list:
         component = []
         if self.get_graph() is None:
@@ -139,6 +194,13 @@ class GraphAlgo(GraphAlgoInterface):
     #     s.append(n.getKey())
     #     return s
 
+    """
+    DFS algorithms
+    
+    For more:
+    https://en.wikipedia.org/wiki/Depth-first_search
+    """
+
     def DFS(self, n: node):
         q = Queue()
         n.setTag(1)
@@ -153,6 +215,13 @@ class GraphAlgo(GraphAlgoInterface):
         s.append(n.getKey())
         return s
 
+    """
+    Specific DFS algorithms that costume for us, work on opposite graph and
+    build the SCCs
+    
+    work on same principals like DFS below
+    """
+
     def DFS_Opp(self, n: node, s: list):
         n.setTag(1)
         for v in self.get_graph().all_in_edges_of_node(n.getKey()).keys():
@@ -163,6 +232,14 @@ class GraphAlgo(GraphAlgoInterface):
         s.append(n.getKey())
         return s
 
+    """
+    Finds all the Strongly Connected Component(SCC) in the graph.
+    @return: The list all SCC
+
+    Notes:
+    If the graph is None the function should return an empty list []
+    """
+
     def connected_components(self) -> List[list]:
         s = []
         components = []
@@ -170,7 +247,7 @@ class GraphAlgo(GraphAlgoInterface):
         for n in self.get_graph().get_all_v().values():
             if n.getTag() == 0:
                 self.DFS(n, s)
-# dfs on the opp graph
+        # dfs on the opp graph
         self.resetTagTo0()
         while len(s) > 0:
             x = s.pop()
@@ -180,11 +257,19 @@ class GraphAlgo(GraphAlgoInterface):
                 components.append(sorted(p))
         return components
 
+    """
+    Plots the graph.
+    If the nodes have a position, the nodes will be placed there.
+    Otherwise, they will be placed in a random but elegant manner.
+    @return: None
+    """
+
     def plot_graph(self) -> None:
         # Get limits of graph
         if self.get_graph() is None:
             return
         minX, minY, maxX, maxY = inf, inf, -inf, -inf
+        # This block for compute the limits of screen
         for n in self.get_graph().get_all_v().values():
             if n.getPos() is not None:
                 if n.getPos()[0] > maxX:
@@ -195,9 +280,12 @@ class GraphAlgo(GraphAlgoInterface):
                     maxY = n.getPos()[0]
                 if n.getPos()[1] < minY:
                     minY = n.getPos()[0]
-
+        # If minX is inf, it mean that all of these variables are inf or -inf
+        # and then we decide the limits is x[1,10], y[1,10]
         if minX is inf:
             minX, maxX, minY, maxY = 1, 10, 1, 10
+        # Else, if we have limit but the sub is under node size, we increase
+        # the limits by n/2 to whole side
         else:
             n = self.get_graph().v_size()
             if maxX - minX < n or maxY - minY < n:
@@ -207,19 +295,19 @@ class GraphAlgo(GraphAlgoInterface):
                 minY -= n / 2
         k = maxX - minX
 
+        # Insert the x and y value to lists, and if None, compute random value between [min,max]
         X, Y = [], []
         for n in self.get_graph().get_all_v().values():
             if n.getPos() is None:
                 n.setPos((rnd.uniform(minX, maxX), rnd.uniform(minY, maxY), rnd.uniform(0, 10)))
             # TODO check situation two nodes on same point
-            # while X.__contains__(n.getPos()[0]) is F or Y.__contains__(n.getPos()[1] is True):
-            # continue
             X.extend([n.getPos()[0]])
             Y.extend([n.getPos()[1]])
             plt.annotate(n.getKey(), (n.getPos()[0], n.getPos()[1]), (n.getPos()[0] + 1 / k, n.getPos()[1] + 1 / k),
                          c='g')
         plt.scatter(X, Y, s=100)
 
+        # Draw all edges
         for n in self.get_graph().get_all_v().values():
             nX = n.getPos()[0]
             nY = n.getPos()[1]
@@ -229,6 +317,10 @@ class GraphAlgo(GraphAlgoInterface):
                 # TODO draw arrow on edge of node
                 plt.annotate("", xy=(eX, eY), xytext=(nX, nY), arrowprops=dict(arrowstyle="->"))
         plt.show()
+
+    """
+    ToString function
+    """
 
     def __str__(self):
         return str(self.ga)
