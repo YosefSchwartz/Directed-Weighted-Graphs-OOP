@@ -107,40 +107,36 @@ class GraphAlgo(GraphAlgoInterface):
             return component
         if self.get_graph().getNode(id1) is None:
             return component
-        for key in self.get_graph().get_all_v().keys():
-            if self.shortest_path(id1, key)[0] != inf and self.shortest_path(key, id1)[0] != inf:
-                n = self.get_graph().getNode(key)
-                n.setCMP(1)
-                component.extend([key])
-        return component
+        for n in self.get_graph().get_all_v().values():
+            if n.getCMP() != 0:
+                if self.shortest_path(id1, n.getKey()[0] != inf and self.shortest_path(n.getKey()), id1)[0] != inf:
+                    n.setCMP(1)
+                    component.extend([n.getKey()])
+            return component
 
-    # def connected_components(self) -> List[list]:
-    #     components = []
-    #     if self.get_graph() is None:
-    #         return components
-    #     self.resetCMPTo0()
-    #     for n in self.get_graph().get_all_v().values():
-    #         if n.getCMP() == 0:
-    #             component = self.connected_component(n.getKey())
-    #             components.extend([component])
-    #     return components
-
+    def connected_components(self) -> List[list]:
+        components = []
+        if self.get_graph() is None:
+            return components
+        self.resetCMPTo0()
+        for n in self.get_graph().get_all_v().values():
+            if n.getCMP() == 0:
+                component = self.connected_component(n.getKey())
+                components.extend([component])
+        self.resetCMPTo0()
+        return components
 
     def dfs(self, key, sign):
-        if sign == 0: # regular graph
+        if sign == 0:  # regular graph
             if self.get_graph().getNode(key).setTag(1):
                 for dest in self.get_graph().all_out_edges_of_node(key).keys():
                     self.dfs(dest, 0)
 
-
-
-
-        elif sign == 1: # reversed graph
-
+        # elif sign == 1: # reversed graph
 
     def connected_components(self) -> List[list]:
         components = []
-        s = [] # stack
+        s = []  # stack
         self.resetTagTo0()
         for n in self.get_graph().get_all_v().values():
             if n.getTag() == 0:
@@ -151,11 +147,6 @@ class GraphAlgo(GraphAlgoInterface):
             if n.getTag() == 0:
                 components.extend([self.dfs(n.getKey(), 1)])
         return components
-
-
-
-
-
 
     def plot_graph(self) -> None:
         # Get limits of graph
@@ -178,11 +169,11 @@ class GraphAlgo(GraphAlgoInterface):
         else:
             n = self.get_graph().v_size()
             if maxX - minX < n or maxY - minY < n:
-                maxX += n/2
-                minX -= n/2
-                maxY += n/2
-                minY -= n/2
-        k = maxX-minX
+                maxX += n / 2
+                minX -= n / 2
+                maxY += n / 2
+                minY -= n / 2
+        k = maxX - minX
 
         X, Y = [], []
         for n in self.get_graph().get_all_v().values():
@@ -190,10 +181,11 @@ class GraphAlgo(GraphAlgoInterface):
                 n.setPos((rnd.uniform(minX, maxX), rnd.uniform(minY, maxY), rnd.uniform(0, 10)))
             # TODO check situation two nodes on same point
             # while X.__contains__(n.getPos()[0]) is F or Y.__contains__(n.getPos()[1] is True):
-                # continue
+            # continue
             X.extend([n.getPos()[0]])
             Y.extend([n.getPos()[1]])
-            plt.annotate(n.getKey(), (n.getPos()[0], n.getPos()[1]), (n.getPos()[0]+1/k, n.getPos()[1]+1/k), c='g')
+            plt.annotate(n.getKey(), (n.getPos()[0], n.getPos()[1]), (n.getPos()[0] + 1 / k, n.getPos()[1] + 1 / k),
+                         c='g')
         plt.scatter(X, Y, s=100)
 
         for n in self.get_graph().get_all_v().values():
