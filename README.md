@@ -17,6 +17,7 @@ For example:
 Read more - https://en.wikipedia.org/wiki/Dijkstra%27s_algorithm
 
 ***DFS algorithm*** - This algorithm read the graph node by node for the deapth, we choose implements this iterativly.  
+NOTE: in our project, were we find SCC we use this algorithm, and then we use almost same algorithm (`DFS_Opp(id)`), this replace the need of graph transpose.
 Read more - https://en.wikipedia.org/wiki/Depth-first_search
 
 #### Tests:  
