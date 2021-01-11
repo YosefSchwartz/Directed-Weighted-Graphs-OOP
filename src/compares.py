@@ -1,7 +1,6 @@
 import json
 import random
 from math import inf
-
 import networkx as nx
 
 from src.GraphAlgo import GraphAlgo

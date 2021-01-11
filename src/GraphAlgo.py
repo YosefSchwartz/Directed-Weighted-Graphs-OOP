@@ -294,7 +294,7 @@ class GraphAlgo(GraphAlgoInterface):
                 n.setPos((rnd.uniform(minX, maxX), rnd.uniform(minY, maxY), rnd.uniform(0, 10)))
             X.extend([n.getPos()[0]])
             Y.extend([n.getPos()[1]])
-            plt.annotate(n.getKey(), (n.getPos()[0], n.getPos()[1]), (n.getPos()[0] + 1 / k, n.getPos()[1] + 1 / k),
+            plt.annotate(n.getKey(), (n.getPos()[0], n.getPos()[1]), (n.getPos()[0], n.getPos()[1]),
                          c='g')
         plt.scatter(X, Y, s=100)
 
