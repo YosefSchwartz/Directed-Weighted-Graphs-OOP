@@ -133,6 +133,7 @@ class MyTestCase(unittest.TestCase):
         self.assertEqual(True, component5 == [5])
 
         components = ga.connected_components()
+        #  brt
         self.assertEqual(True, (sorted(components) == [[0], [1, 2], [3], [4], [5]]))
 
         g.add_edge(0, 5, 4)

@@ -15,7 +15,6 @@ import random as rnd
 This class represents some algorithms that occurred on DiGraph (directed weighted graph)
 """
 
-
 class GraphAlgo(GraphAlgoInterface):
     ga: DiGraph
 
@@ -60,7 +59,10 @@ class GraphAlgo(GraphAlgoInterface):
         try:
             graph = {"Edges": [], "Nodes": []}
             for n in self.get_graph().get_all_v().values():
-                pos = str(n.getPos()[0]) + "," + str(n.getPos()[1]) + "," + str(n.getPos()[2])
+                if n.getPos() is not None:
+                    pos = str(n.getPos()[0]) + "," + str(n.getPos()[1]) + "," + str(n.getPos()[2])
+                else:
+                    pos = None
                 graph.get("Nodes").extend([{"pos": pos, "id": n.getKey()}])
                 eOut = self.get_graph().all_out_edges_of_node(n.getKey())
                 for e in eOut.keys():
@@ -201,18 +203,31 @@ class GraphAlgo(GraphAlgoInterface):
     https://en.wikipedia.org/wiki/Depth-first_search
     """
 
-    def DFS(self, n: node):
-        q = Queue()
+    def DFS(self, n: node, s):
+        q = [n]
+        s2 = Queue()
+        s1 = []
         n.setTag(1)
-        q.put(n)
-        while q.empty() is not True:
-            n = q.get()
-            for v in self.get_graph().all_out_edges_of_node(n.getKey()).keys():
+        while len(q) >0 :
+            n = q[-1]
+            q.pop()
+            Vout = self.get_graph().all_out_edges_of_node(n.getKey())
+            niSize = len(Vout)
+            for v in Vout.keys():
                 nodeV = self.get_graph().getNode(v)
                 if nodeV.getTag() == 0:
-                    q.put(nodeV)
-                    n.setTag(2)
-        s.append(n.getKey())
+                    q.append(nodeV)
+                    nodeV.setTag(1)
+                else:
+                    niSize -= 1
+            if niSize == 0:
+                s2.put(n.getKey())
+            else:
+                s1.append(n.getKey())
+        while s2.empty() is False:
+            s.append(s2.get())
+        while len(s1) != 0:
+            s.append(s1.pop())
         return s
 
     """
@@ -223,13 +238,30 @@ class GraphAlgo(GraphAlgoInterface):
     """
 
     def DFS_Opp(self, n: node, s: list):
+        q = [n]
+        s2 = Queue()
+        s1 = []
         n.setTag(1)
-        for v in self.get_graph().all_in_edges_of_node(n.getKey()).keys():
-            nodeV = self.get_graph().getNode(v)
-            if nodeV.getTag() == 0:
-                self.DFS_Opp(nodeV, s)
-        n.setTag(2)
-        s.append(n.getKey())
+        while len(q) > 0:
+            n = q[-1]
+            q.pop()
+            Vin = self.get_graph().all_in_edges_of_node(n.getKey())
+            niSize = len(Vin)
+            for v in Vin.keys():
+                nodeV = self.get_graph().getNode(v)
+                if nodeV.getTag() == 0:
+                    q.append(nodeV)
+                    nodeV.setTag(1)
+                else:
+                    niSize -= 1
+            if niSize == 0:
+                s2.put(n.getKey())
+            else:
+                s1.append(n.getKey())
+        while s2.empty() is False:
+            s.append(s2.get())
+        while len(s1) != 0:
+            s.append(s1.pop())
         return s
 
     """
@@ -240,6 +272,16 @@ class GraphAlgo(GraphAlgoInterface):
     If the graph is None the function should return an empty list []
     """
 
+    # def DFS_Opp(self, n: node, s: list):
+    #     n.setTag(1)
+    #     for v in self.get_graph().all_in_edges_of_node(n.getKey()).keys():
+    #         nodeV = self.get_graph().getNode(v)
+    #         if nodeV.getTag() == 0:
+    #             self.DFS_Opp(nodeV, s)
+    #     n.setTag(2)
+    #     s.append(n.getKey())
+    #     return s
+
     def connected_components(self) -> List[list]:
         s = []
         components = []
@@ -247,6 +289,7 @@ class GraphAlgo(GraphAlgoInterface):
         for n in self.get_graph().get_all_v().values():
             if n.getTag() == 0:
                 self.DFS(n, s)
+        # dfs on the opp graph
         # dfs on the opp graph
         self.resetTagTo0()
         while len(s) > 0:

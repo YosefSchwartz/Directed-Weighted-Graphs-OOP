@@ -1,5 +1,6 @@
 
 import timeit
+from queue import Queue
 
 from DiGraph import DiGraph
 from GraphAlgo import GraphAlgo
@@ -89,10 +90,12 @@ def main():
     g.add_edge(7, 8, 3)
 
     ga = GraphAlgo(g)
-    # print(ga.connected_components())
-    print(ga.connected_component(4))
+    # print(ga.connected_component(4))
+    print(ga.connected_components())
 
-    # v, e = 1000, 8000
+
+
+    # v, e = 10**6, 10**4
     # random.seed(2)
     # g = graphCreator(v)
     # for i in range(e):
@@ -100,13 +103,12 @@ def main():
     #     n1 = random.randint(0, v - 1)
     #     n2 = random.randint(0, v - 1)
     #     g.add_edge(n1, n2, w)
-    # print("here")
     # ga1 = GraphAlgo(g)
     # n1 = random.randint(0, v - 1)
     # start = timeit.default_timer()
-    # # ga1.connected_component(n1)
-    # # mid = timeit.default_timer()
-    # # print("time for connected_component-> " + str(mid - start))
+    # ga1.connected_component(n1)
+    # mid = timeit.default_timer()
+    # print("time for connected_component-> " + str(mid - start))
     # ga1.connected_components()
     # end = timeit.default_timer()
     # print("time for connected_components-> " + str(end - start))
