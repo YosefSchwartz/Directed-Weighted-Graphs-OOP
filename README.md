@@ -1,4 +1,4 @@
-# Exam 3 - Directed weighted graphs, OOP course. 
+# Exam 3 - Directed weighted graph, OOP course. 
 ***Authors:** Eden Shkuri & Yosef Schwartz*  
 ***Program language:** Python 3.9*
 
