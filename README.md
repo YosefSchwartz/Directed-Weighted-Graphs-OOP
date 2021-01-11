@@ -34,6 +34,5 @@ Pythons 3.0 and more
 #### Plot graph examples:
 ![A4](https://user-images.githubusercontent.com/73064850/104215664-c2a2f900-5441-11eb-937a-7c662d9eef02.jpg)
   
-  
-   
-   
+    
+  ![10_80_1](https://user-images.githubusercontent.com/73064850/104215863-0ac21b80-5442-11eb-890c-4a6352fd8daf.jpg)
