@@ -32,7 +32,7 @@ Pythons 3.0 and more
     
     
 #### Plot graph examples:
-![A4](https://user-images.githubusercontent.com/73064850/104215664-c2a2f900-5441-11eb-937a-7c662d9eef02.jpg)
+![FFF](https://user-images.githubusercontent.com/73064850/104216694-106c3100-5443-11eb-8bf1-ad6f30a189dc.jpg)
   
     
   ![10_80_1](https://user-images.githubusercontent.com/73064850/104215863-0ac21b80-5442-11eb-890c-4a6352fd8daf.jpg)
