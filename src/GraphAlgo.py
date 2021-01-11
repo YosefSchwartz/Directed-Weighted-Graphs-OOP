@@ -8,37 +8,33 @@ from GraphInterface import GraphInterface
 from queue import PriorityQueue, Queue
 import matplotlib.pyplot as plt
 import json
-import numpy as np
 import random as rnd
 
-"""
-This class represents some algorithms that occurred on DiGraph (directed weighted graph)
-"""
 
 class GraphAlgo(GraphAlgoInterface):
+    """
+    This class represents some algorithms that occurred on DiGraph (directed weighted graph)
+    """
     ga: DiGraph
 
-    """
-    Constructor function
-    """
-
     def __init__(self, graph=None):
+        """
+        Constructor function
+        """
         self.ga = graph
 
-    """
-    :return: the directed graph on which the algorithm works on.
-    """
-
     def get_graph(self) -> GraphInterface:
+        """
+        :return: the directed graph on which the algorithm works on.
+        """
         return self.ga
 
-    """
-    Loads a graph from a json file.
-    @param file_name: The path to the json file
-    @returns True if the loading was successful, False o.w.
-    """
-
     def load_from_json(self, file_name: str) -> bool:
+        """
+        Loads a graph from a json file.
+        @param file_name: The path to the json file
+        @returns True if the loading was successful, False o.w.
+        """
         try:
             fp = open(file_name)
             g = DiGraph(**json.load(fp))
@@ -49,13 +45,12 @@ class GraphAlgo(GraphAlgoInterface):
             print(e)
             return False
 
-    """
-    Saves the graph in JSON format to a file
-    @param file_name: The path to the out file
-    @return: True if the save was successful, False o.w.
-    """
-
     def save_to_json(self, file_name: str) -> bool:
+        """
+        Saves the graph in JSON format to a file
+        @param file_name: The path to the out file
+        @return: True if the save was successful, False o.w.
+        """
         try:
             graph = {"Edges": [], "Nodes": []}
             for n in self.get_graph().get_all_v().values():
@@ -74,30 +69,20 @@ class GraphAlgo(GraphAlgoInterface):
             print(e)
             return False
 
-    """
-    Reset all tags of each node to zero
-    """
-
     def resetTagTo0(self):
+        """
+        Reset all tags of each node to zero
+        """
         for n in self.get_graph().get_all_v().values():
             n.setTag(0)
 
-    """
-    Reset all CMPs of each node to zero
-    """
-
-    def resetCMPTo0(self):
-        for n in self.get_graph().get_all_v().values():
-            n.setCMP(0)
-
-    """
-    Dijkstra algorithms
-    
-    For more:
-    https://en.wikipedia.org/wiki/Dijkstra%27s_algorithm
-    """
-
     def Dijkstra(self, src: int):
+        """
+        Dijkstra algorithms
+
+        For more:
+        https://en.wikipedia.org/wiki/Dijkstra%27s_algorithm
+        """
         dist = PriorityQueue()
         re = {}
         self.resetTagTo0()
@@ -124,14 +109,13 @@ class GraphAlgo(GraphAlgoInterface):
             tmp.setTag(1)
         return re
 
-    """
-    Returns the shortest path from node id1 to node id2 using Dijkstra's Algorithm
-    @param id1: The start node id
-    @param id2: The end node id
-    @return: The distance of the path, a list of the nodes ids that the path goes through
-    """
-
     def shortest_path(self, id1: int, id2: int) -> (float, list):
+        """
+        Returns the shortest path from node id1 to node id2 using Dijkstra's Algorithm
+        :param id1: The start node id
+        :param id2: The end node id
+        :return: The distance of the path, a list of the nodes ids that the path goes through
+        """
         if self.get_graph() is None:
             return float(inf), []
         if self.get_graph().getNode(id1) is None or self.get_graph().getNode(id2) is None:
@@ -151,17 +135,16 @@ class GraphAlgo(GraphAlgoInterface):
         path.reverse()
         return dist, path
 
-    """
-    Finds the Strongly Connected Component(SCC) that node id1 is a part of.
-    @param id1: The node id
-    @return: The list of nodes in the SCC
-
-    Notes:
-    If the graph is None or id1 is not in the graph,
-    the function should return an empty list []
-    """
-
     def connected_component(self, id1: int) -> list:
+        """
+        Finds the Strongly Connected Component(SCC) that node id1 is a part of.
+        :param id1: The node id
+        :return: The list of nodes in the SCC
+
+        Notes:
+        If the graph is None or id1 is not in the graph,
+        the function should return an empty list []
+        """
         component = []
         if self.get_graph() is None:
             return component
@@ -174,12 +157,22 @@ class GraphAlgo(GraphAlgoInterface):
         Vin = self.DFS_Opp(n, [])
         return list(set(Vout).intersection(Vin))
 
-    def DFS(self, n: node, s):
+    def DFS(self, n: node, s: list):
+        """
+        DFS algorithms - iterative.
+        The list are return sorted by finish time
+        work by same principals of regular DFS algorithm
+
+        For more - https://en.wikipedia.org/wiki/Depth-first_search
+        :param n: source node
+        :param s: list of node, order by finish time, the function will update the list not replace it!
+        :return: list of node, sorted by finish time
+        """
         q = [n]
         s2 = Queue()
         s1 = []
         n.setTag(1)
-        while len(q) >0 :
+        while len(q) > 0:
             n = q.pop()
             Vout = self.get_graph().all_out_edges_of_node(n.getKey())
             niSize = len(Vout)
@@ -200,14 +193,14 @@ class GraphAlgo(GraphAlgoInterface):
             s.append(s1.pop())
         return s
 
-    """
-    Specific DFS algorithms that costume for us, work on opposite graph and
-    build the SCCs
-    
-    work on same principals like DFS below
-    """
-
     def DFS_Opp(self, n: node, s: list):
+        """
+        similar DFS, work on opposite edges (reflected at "all_in_edges_of_node")
+
+        :param n: source node
+        :param s: list of node, order by finish time, the function will update the list not replace it!
+        :return: list of node, sorted by finish time
+        """
         q = [n]
         s2 = Queue()
         s1 = []
@@ -233,15 +226,14 @@ class GraphAlgo(GraphAlgoInterface):
             s.append(s1.pop())
         return s
 
-    """
-    Finds all the Strongly Connected Component(SCC) in the graph.
-    @return: The list all SCC
-
-    Notes:
-    If the graph is None the function should return an empty list []
-    """
-
     def connected_components(self) -> List[list]:
+        """
+        Finds all the Strongly Connected Component(SCC) in the graph.
+        :return: The list all SCC
+
+        Notes:
+        If the graph is None the function should return an empty list []
+        """
         s = []
         components = []
         self.resetTagTo0()
@@ -258,14 +250,13 @@ class GraphAlgo(GraphAlgoInterface):
                 components.append(sorted(p))
         return components
 
-    """
-    Plots the graph.
-    If the nodes have a position, the nodes will be placed there.
-    Otherwise, they will be placed in a random but elegant manner.
-    @return: None
-    """
-
     def plot_graph(self) -> None:
+        """
+        Plots the graph.
+        If the nodes have a position, the nodes will be placed there.
+        Otherwise, they will be placed in a random but elegant manner.
+        :return: None
+        """
         # Get limits of graph
         if self.get_graph() is None:
             return
@@ -301,7 +292,6 @@ class GraphAlgo(GraphAlgoInterface):
         for n in self.get_graph().get_all_v().values():
             if n.getPos() is None:
                 n.setPos((rnd.uniform(minX, maxX), rnd.uniform(minY, maxY), rnd.uniform(0, 10)))
-            # TODO check situation two nodes on same point
             X.extend([n.getPos()[0]])
             Y.extend([n.getPos()[1]])
             plt.annotate(n.getKey(), (n.getPos()[0], n.getPos()[1]), (n.getPos()[0] + 1 / k, n.getPos()[1] + 1 / k),
@@ -315,13 +305,11 @@ class GraphAlgo(GraphAlgoInterface):
             for eOut in self.get_graph().all_out_edges_of_node(n.getKey()).keys():
                 eX = self.get_graph().getNode(eOut).getPos()[0]
                 eY = self.get_graph().getNode(eOut).getPos()[1]
-                # TODO draw arrow on edge of node
                 plt.annotate("", xy=(eX, eY), xytext=(nX, nY), arrowprops=dict(arrowstyle="->"))
         plt.show()
 
-    """
-    ToString function
-    """
-
     def __str__(self):
+        """
+        ToString function
+        """
         return str(self.ga)
