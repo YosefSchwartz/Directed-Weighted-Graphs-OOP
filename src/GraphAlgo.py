@@ -151,18 +151,6 @@ class GraphAlgo(GraphAlgoInterface):
         path.reverse()
         return dist, path
 
-    # def connected_component(self, id1: int) -> list:
-    #     component = []
-    #     if self.get_graph() is None:
-    #         return component
-    #     if self.get_graph().getNode(id1) is None:
-    #         return component
-    #     for n in self.get_graph().get_all_v().values():
-    #         if self.shortest_path(id1, n.getKey())[0] != inf and self.shortest_path(n.getKey(), id1)[0] != inf:
-    #             n.setCMP(1)
-    #             component.extend([n.getKey()])
-    #     return component
-
     """
     Finds the Strongly Connected Component(SCC) that node id1 is a part of.
     @param id1: The node id
@@ -186,31 +174,13 @@ class GraphAlgo(GraphAlgoInterface):
         Vin = self.DFS_Opp(n, [])
         return list(set(Vout).intersection(Vin))
 
-    # def DFS(self, n: node, s: list):
-    #     n.setTag(1)
-    #     for v in self.get_graph().all_out_edges_of_node(n.getKey()).keys():
-    #         nodeV = self.get_graph().getNode(v)
-    #         if nodeV.getTag() == 0:
-    #             self.DFS(nodeV, s)
-    #     n.setTag(2)
-    #     s.append(n.getKey())
-    #     return s
-
-    """
-    DFS algorithms
-    
-    For more:
-    https://en.wikipedia.org/wiki/Depth-first_search
-    """
-
     def DFS(self, n: node, s):
         q = [n]
         s2 = Queue()
         s1 = []
         n.setTag(1)
         while len(q) >0 :
-            n = q[-1]
-            q.pop()
+            n = q.pop()
             Vout = self.get_graph().all_out_edges_of_node(n.getKey())
             niSize = len(Vout)
             for v in Vout.keys():
@@ -243,8 +213,7 @@ class GraphAlgo(GraphAlgoInterface):
         s1 = []
         n.setTag(1)
         while len(q) > 0:
-            n = q[-1]
-            q.pop()
+            n = q.pop()
             Vin = self.get_graph().all_in_edges_of_node(n.getKey())
             niSize = len(Vin)
             for v in Vin.keys():
@@ -272,16 +241,6 @@ class GraphAlgo(GraphAlgoInterface):
     If the graph is None the function should return an empty list []
     """
 
-    # def DFS_Opp(self, n: node, s: list):
-    #     n.setTag(1)
-    #     for v in self.get_graph().all_in_edges_of_node(n.getKey()).keys():
-    #         nodeV = self.get_graph().getNode(v)
-    #         if nodeV.getTag() == 0:
-    #             self.DFS_Opp(nodeV, s)
-    #     n.setTag(2)
-    #     s.append(n.getKey())
-    #     return s
-
     def connected_components(self) -> List[list]:
         s = []
         components = []
@@ -289,7 +248,6 @@ class GraphAlgo(GraphAlgoInterface):
         for n in self.get_graph().get_all_v().values():
             if n.getTag() == 0:
                 self.DFS(n, s)
-        # dfs on the opp graph
         # dfs on the opp graph
         self.resetTagTo0()
         while len(s) > 0:
