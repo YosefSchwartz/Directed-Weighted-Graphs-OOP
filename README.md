@@ -12,9 +12,9 @@ For example:
 2. `shortest_path(id1, id2)` - This function calculate the shoretest path by weight from id1 node to id2 node, and return a pair of the distant and the path in list, remmember!, the shortest path may include more nodes from another path, but this path had lower weight by total.
 3. `load_from_json(file_name)` - This function get string that represent a path to file in JSON format, and start to build new graph by his data.  
   
-  and more
+  and more..
 
-#### Known algorithms
+### Known algorithms
 ***dijkstra algorithm*** - This algorithm scan all graph from start node, and for each node fill the distance, and infinity if none.  
 Read more - https://en.wikipedia.org/wiki/Dijkstra%27s_algorithm
 
@@ -27,7 +27,7 @@ Our tests focus on corrects of algorithms and function, and on time that take to
 We use the default `UnitTesting` class.
 
 ##### System required  
-Pythons 3.0 and more
+Pythons 3.0 at least
   
     
     
