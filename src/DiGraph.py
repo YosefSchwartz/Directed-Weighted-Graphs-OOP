@@ -157,6 +157,7 @@ class DiGraph(GraphInterface):
 
         Note: if the node id does not exists the function will do nothing
         """
+
         if self.graph is None:
             return False
         if self.graph.get(node_id) is None:
@@ -164,7 +165,7 @@ class DiGraph(GraphInterface):
         for eIn in self.edges.get(node_id)[0]:
             self.edges.get(eIn)[1].pop(node_id)
             self.edgeSize -= 1
-            self.MC += 1
+            # self.MC += 1
         for eOut in self.edges.get(node_id)[1]:
             self.edges.get(eOut)[0].pop(node_id)
 
