@@ -9,6 +9,7 @@ from queue import PriorityQueue, Queue
 import matplotlib.pyplot as plt
 import json
 import random as rnd
+import numpy as np
 
 
 class GraphAlgo(GraphAlgoInterface):
@@ -289,13 +290,16 @@ class GraphAlgo(GraphAlgoInterface):
 
         # Insert the x and y value to lists, and if None, compute random value between [min,max]
         X, Y = [], []
+        # fig = plt.gcf()
+        # size = fig.get_size_inches() * fig.dpi
+
         for n in self.get_graph().get_all_v().values():
             if n.getPos() is None:
                 n.setPos((rnd.uniform(minX, maxX), rnd.uniform(minY, maxY), rnd.uniform(0, 10)))
             X.extend([n.getPos()[0]])
             Y.extend([n.getPos()[1]])
             plt.annotate(n.getKey(), (n.getPos()[0], n.getPos()[1]), (n.getPos()[0], n.getPos()[1]),
-                         c='g')
+                         c='r')
         plt.scatter(X, Y, s=100)
 
         # Draw all edges
