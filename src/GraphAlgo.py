@@ -1,10 +1,10 @@
 from math import inf
 from typing import List
 
-import node
-from GraphAlgoInterface import GraphAlgoInterface
-from DiGraph import DiGraph
-from GraphInterface import GraphInterface
+from src.node import node
+from src.GraphAlgoInterface import GraphAlgoInterface
+from src.DiGraph import DiGraph
+from src.GraphInterface import GraphInterface
 from queue import PriorityQueue, Queue
 import matplotlib.pyplot as plt
 import json

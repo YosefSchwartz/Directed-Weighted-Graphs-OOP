@@ -1,5 +1,6 @@
 import random
 import unittest
+
 from src.DiGraph import DiGraph
 
 
@@ -62,11 +63,10 @@ class MyTestCase(unittest.TestCase):
         g2.remove_edge(2, 4)
         eOut2 = g2.all_out_edges_of_node(2)
         self.assertEqual(None, eOut2.get(4))
-        self.assertEqual(16, g2.get_mc())
+        self.assertEqual(14, g2.get_mc())
         self.assertEqual(6, g2.nodeSize)
         self.assertEqual(4, g2.edgeSize)
 
 
 if __name__ == '__main__':
     unittest.main()
-
