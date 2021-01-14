@@ -14,7 +14,10 @@ def graphCreator(vSize: int):
 
 class MyTestCase(unittest.TestCase):
 
-    def test_something(self):
+    def test_add_of_edge_node(self):
+        """
+            checks the adding of nodes and edges to the graph
+        """
         g1 = graphCreator(6)
         random.seed(1)
         inRange = random.randint(0, 6)
@@ -37,6 +40,9 @@ class MyTestCase(unittest.TestCase):
         self.assertEqual(2.5, eOut0.get(2))
 
     def test_removing(self):
+        """
+           checks the removing of nodes and edges from the graph
+        """
         g2 = graphCreator(7)
         g2.add_edge(0, 1, 1)
         g2.add_edge(0, 2, 2.5)
@@ -63,7 +69,7 @@ class MyTestCase(unittest.TestCase):
         g2.remove_edge(2, 4)
         eOut2 = g2.all_out_edges_of_node(2)
         self.assertEqual(None, eOut2.get(4))
-        self.assertEqual(14, g2.get_mc())
+        self.assertEqual(15, g2.get_mc())
         self.assertEqual(6, g2.nodeSize)
         self.assertEqual(4, g2.edgeSize)
 

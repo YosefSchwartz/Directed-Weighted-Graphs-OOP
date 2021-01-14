@@ -20,6 +20,9 @@ def graphCreator(v: int):
 
 class MyTestCase(unittest.TestCase):
     def test_init(self):
+        """
+           checks that the init is done like supposed
+        """
         g = DiGraph()
         g.add_node(0, None)
         g.add_node(1, None)
@@ -28,10 +31,11 @@ class MyTestCase(unittest.TestCase):
         g.add_edge(2, 1, 0.4)
         ga = GraphAlgo(g)
         self.assertEqual(g, ga.get_graph())
-        # TODO
-        #   compare to graphs
 
-    def test_load_from_json(self):
+    def test_load_save_from_json(self):
+        """
+           checks the correctness of loading and saving from json file
+        """
         v, e = 4, 4
         seed(1)
         g = graphCreator(v)
@@ -44,13 +48,14 @@ class MyTestCase(unittest.TestCase):
         ga2 = GraphAlgo()
         ga1.save_to_json("jsonTest.json")  # save g1
         ga2.load_from_json("jsonTest.json")  # load the g1 text file to g2
-
         self.assertEqual(g, ga2.get_graph())  # check if g2=graph(that g1 init to) like supposed to
         self.assertEqual(ga2.get_graph(), ga1.get_graph())  # check if g2=g1 like supposed to
 
     @staticmethod
-    # @timeout_decorator.timeout(10)
     def save_load_TimeTest():
+        """
+           checks the time of loading and saving from json file in big graph
+        """
         v, e = 1000000, 100000
         seed(2)
         g = graphCreator(v)
@@ -65,6 +70,9 @@ class MyTestCase(unittest.TestCase):
         ga2.load_from_json("jsonTest.json")
 
     def test_shortestPath(self):
+        """
+           checks the correctness of the shortest path
+        """
         g = graphCreator(6)
         g.add_edge(0, 1, 0.5)
         g.add_edge(0, 2, 16.6)
@@ -95,6 +103,9 @@ class MyTestCase(unittest.TestCase):
 
     @staticmethod
     def test_shortestPath_Time():
+        """
+           checks the time for the shortest path on a big graph
+        """
         v, e = 1000000, 100000
         seed(2)
         g = graphCreator(v)
@@ -108,7 +119,10 @@ class MyTestCase(unittest.TestCase):
         n2 = random.randint(0, v-1)
         ga1.shortest_path(n1, n2)
 
-    def test_connected_components(self):
+    def test_connected_component_s(self):
+        """
+           checks the correctness of the connected_components and connected_component
+        """
         g = graphCreator(6)
         g.add_edge(0, 1, 0.5)
         g.add_edge(0, 2, 16.6)
@@ -172,6 +186,9 @@ class MyTestCase(unittest.TestCase):
 
     @staticmethod
     def test_connected_component_time():
+        """
+           checks the time for the connected_component on a big graph
+        """
         v, e = 10**6, 10**5
         seed(2)
         g = graphCreator(v)
@@ -189,6 +206,9 @@ class MyTestCase(unittest.TestCase):
 
     @staticmethod
     def test_connected_components_time():
+        """
+           checks the time for the connected_components on a big graph
+        """
         v, e = 10**5, 10**5
         seed(2)
         g = graphCreator(v)
