@@ -77,40 +77,40 @@ def main():
     # print("connected_components of g")
     # print(ga.connected_components())
 
-    g = DiGraph()
-    for i in range(9):
-        g.add_node(i, None)
-    g.add_edge(0, 1, 3)
-    g.add_edge(1, 2, 2)
-    g.add_edge(2, 3, 3)
-    g.add_edge(2, 4, 2)
-    g.add_edge(3, 0, 7)
-    g.add_edge(4, 5, 3)
-    g.add_edge(5, 6, 3)
-    g.add_edge(6, 4, 4)
-    g.add_edge(7, 6, 4)
-    g.add_edge(7, 8, 3)
-
-    ga = GraphAlgo(g)
-    print(ga.connected_components())
-    print(ga.shortest_path(0, 3))
-
-    g2 = nx.DiGraph()
-    for i in range(9):
-        g2.add_node(i)
-    g2.add_edge(0, 1, weight=3)
-    g2.add_edge(1, 2, weight=2)
-    g2.add_edge(2, 3, weight=3)
-    g2.add_edge(2, 4, weight=2)
-    g2.add_edge(3, 0, weight=7)
-    g2.add_edge(4, 5, weight=3)
-    g2.add_edge(5, 6, weight=3)
-    g2.add_edge(6, 4, weight=4)
-    g2.add_edge(7, 6, weight=4)
-    g2.add_edge(7, 8, weight=3)
-
-    print(nx.strongly_connected_components(g2))
-    print(nx.shortest_path(g2, 0, 3))
+    # g = DiGraph()
+    # for i in range(9):
+    #     g.add_node(i, None)
+    # g.add_edge(0, 1, 3)
+    # g.add_edge(1, 2, 2)
+    # g.add_edge(2, 3, 3)
+    # g.add_edge(2, 4, 2)
+    # g.add_edge(3, 0, 7)
+    # g.add_edge(4, 5, 3)
+    # g.add_edge(5, 6, 3)
+    # g.add_edge(6, 4, 4)
+    # g.add_edge(7, 6, 4)
+    # g.add_edge(7, 8, 3)
+    #
+    # ga = GraphAlgo(g)
+    # print(ga.connected_components())
+    # print(ga.shortest_path(0, 3))
+    #
+    # g2 = nx.DiGraph()
+    # for i in range(9):
+    #     g2.add_node(i)
+    # g2.add_edge(0, 1, weight=3)
+    # g2.add_edge(1, 2, weight=2)
+    # g2.add_edge(2, 3, weight=3)
+    # g2.add_edge(2, 4, weight=2)
+    # g2.add_edge(3, 0, weight=7)
+    # g2.add_edge(4, 5, weight=3)
+    # g2.add_edge(5, 6, weight=3)
+    # g2.add_edge(6, 4, weight=4)
+    # g2.add_edge(7, 6, weight=4)
+    # g2.add_edge(7, 8, weight=3)
+    #
+    # print(nx.strongly_connected_components(g2))
+    # print(nx.shortest_path(g2, 0, 3))
 
 
 
@@ -132,6 +132,9 @@ def main():
     # end = timeit.default_timer()
     # print("time for connected_components-> " + str(end - start))
 
+    g = GraphAlgo()
+    g.load_from_json("../data/A4")
+    g.plot_graph()
 
 if __name__ == '__main__':
     main()
